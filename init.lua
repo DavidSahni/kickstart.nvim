@@ -287,7 +287,7 @@ require('lazy').setup({
         local function map(mode, l, r, opts, desc)
           opts = opts or {}
           opts.buffer = bufnr
-          opts.desc = 'GitSigns: ' .. desc
+          opts.desc = desc
           vim.keymap.set(mode, l, r, opts)
         end
 
@@ -309,36 +309,36 @@ require('lazy').setup({
         end, {}, 'Prev Hunk')
 
         -- Actions
-        map('n', '<leader>hs', gitsigns.stage_hunk, {}, '[S]tage Hunk')
-        map('n', '<leader>hr', gitsigns.reset_hunk, {}, '[R]eset Hunk')
+        map('n', '<leader>gs', gitsigns.stage_hunk, {}, '[s]tage Hunk')
+        map('n', '<leader>gr', gitsigns.reset_hunk, {}, '[r]eset Hunk')
 
-        map('v', '<leader>hs', function()
+        map('v', '<leader>gs', function()
           gitsigns.stage_hunk { vim.fn.line '.', vim.fn.line 'v' }
-        end, {}, '[S]tage Hunk')
+        end, {}, '[s]tage Hunk')
 
-        map('v', '<leader>hr', function()
+        map('v', '<leader>gr', function()
           gitsigns.reset_hunk { vim.fn.line '.', vim.fn.line 'v' }
-        end, {}, '[R]eset Hunk')
+        end, {}, '[r]eset Hunk')
 
-        map('n', '<leader>hS', gitsigns.stage_buffer, {}, 'Stage Buffer')
-        map('n', '<leader>hR', gitsigns.reset_buffer, {}, 'Reset Buffer')
-        map('n', '<leader>hp', gitsigns.preview_hunk, {}, '[P]review Hunk')
-        map('n', '<leader>hi', gitsigns.preview_hunk_inline, {}, 'Preview Hunk [I]nline')
+        map('n', '<leader>gS', gitsigns.stage_buffer, {}, '[S]tage Buffer')
+        map('n', '<leader>gR', gitsigns.reset_buffer, {}, '[R]eset Buffer')
+        map('n', '<leader>gp', gitsigns.preview_hunk, {}, '[p]review Hunk')
+        map('n', '<leader>gi', gitsigns.preview_hunk_inline, {}, 'Preview Hunk [i]nline')
 
-        map('n', '<leader>hb', function()
+        map('n', '<leader>gb', function()
           gitsigns.blame_line { full = true }
-        end, {}, '[B]lame line')
+        end, {}, '[b]lame line')
 
-        map('n', '<leader>hd', gitsigns.diffthis, {}, '[D]iff this')
+        map('n', '<leader>gd', gitsigns.diffthis, {}, '[d]iff this')
 
-        map('n', '<leader>hD', function()
+        map('n', '<leader>gD', function()
           gitsigns.diffthis '~'
-        end, {}, 'Diff against last commit')
+        end, {}, '[D]iff against last commit')
 
-        map('n', '<leader>hQ', function()
+        map('n', '<leader>gQ', function()
           gitsigns.setqflist 'all'
-        end, {}, 'Set all quickfix list')
-        map('n', '<leader>hq', gitsigns.setqflist, {}, 'Set [Q]uickfix list')
+        end, {}, 'Set all [Q]uickfix list')
+        map('n', '<leader>gq', gitsigns.setqflist, {}, 'Set [q]uickfix list')
 
         -- Toggles
         map('n', '<leader>tb', gitsigns.toggle_current_line_blame, {}, 'Toggle line [b]lame')
@@ -412,7 +412,7 @@ require('lazy').setup({
       spec = {
         { '<leader>s', group = '[S]earch' },
         { '<leader>t', group = '[T]oggle' },
-        { '<leader>h', group = 'Git [H]unk', mode = { 'n', 'v' } },
+        { '<leader>g', group = '[G]it Hunk', mode = { 'n', 'v' } },
       },
     },
   },
@@ -1043,14 +1043,14 @@ require('lazy').setup({
   -- require 'kickstart.plugins.indent_line',
   -- require 'kickstart.plugins.lint',
   -- require 'kickstart.plugins.autopairs',
-  -- require 'kickstart.plugins.neo-tree',
+  require 'kickstart.plugins.neo-tree',
   -- require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
   --    This is the easiest way to modularize your config.
   --
   --  Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
-  -- { import = 'custom.plugins' },
+  { import = 'custom.plugins' },
   --
   -- For additional information with loading, sourcing and examples see `:help lazy.nvim-🔌-plugin-spec`
   -- Or use telescope!
