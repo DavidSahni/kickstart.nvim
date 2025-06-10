@@ -102,7 +102,7 @@ vim.g.have_nerd_font = false
 vim.o.number = true
 -- You can also add relative line numbers, to help with jumping.
 --  Experiment for yourself to see if you like it!
--- vim.o.relativenumber = true
+vim.o.relativenumber = true
 
 -- Enable mouse mode, can be useful for resizing splits for example!
 vim.o.mouse = 'a'
@@ -281,6 +281,72 @@ require('lazy').setup({
         topdelete = { text = '‾' },
         changedelete = { text = '~' },
       },
+      on_attach = function(bufnr)
+        local gitsigns = require 'gitsigns'
+
+        local function map(mode, l, r, opts, desc)
+          opts = opts or {}
+          opts.buffer = bufnr
+          opts.desc = 'GitSigns: ' .. desc
+          vim.keymap.set(mode, l, r, opts)
+        end
+
+        -- Navigation
+        map('n', ']c', function()
+          if vim.wo.diff then
+            vim.cmd.normal { ']c', bang = true }
+          else
+            gitsigns.nav_hunk 'next'
+          end
+        end, {}, 'Next Hunk')
+
+        map('n', '[c', function()
+          if vim.wo.diff then
+            vim.cmd.normal { '[c', bang = true }
+          else
+            gitsigns.nav_hunk 'prev'
+          end
+        end, {}, 'Prev Hunk')
+
+        -- Actions
+        map('n', '<leader>hs', gitsigns.stage_hunk, {}, '[S]tage Hunk')
+        map('n', '<leader>hr', gitsigns.reset_hunk, {}, '[R]eset Hunk')
+
+        map('v', '<leader>hs', function()
+          gitsigns.stage_hunk { vim.fn.line '.', vim.fn.line 'v' }
+        end, {}, '[S]tage Hunk')
+
+        map('v', '<leader>hr', function()
+          gitsigns.reset_hunk { vim.fn.line '.', vim.fn.line 'v' }
+        end, {}, '[R]eset Hunk')
+
+        map('n', '<leader>hS', gitsigns.stage_buffer, {}, 'Stage Buffer')
+        map('n', '<leader>hR', gitsigns.reset_buffer, {}, 'Reset Buffer')
+        map('n', '<leader>hp', gitsigns.preview_hunk, {}, '[P]review Hunk')
+        map('n', '<leader>hi', gitsigns.preview_hunk_inline, {}, 'Preview Hunk [I]nline')
+
+        map('n', '<leader>hb', function()
+          gitsigns.blame_line { full = true }
+        end, {}, '[B]lame line')
+
+        map('n', '<leader>hd', gitsigns.diffthis, {}, '[D]iff this')
+
+        map('n', '<leader>hD', function()
+          gitsigns.diffthis '~'
+        end, {}, 'Diff against last commit')
+
+        map('n', '<leader>hQ', function()
+          gitsigns.setqflist 'all'
+        end, {}, 'Set all quickfix list')
+        map('n', '<leader>hq', gitsigns.setqflist, {}, 'Set [Q]uickfix list')
+
+        -- Toggles
+        map('n', '<leader>tb', gitsigns.toggle_current_line_blame, {}, 'Toggle line [b]lame')
+        map('n', '<leader>tw', gitsigns.toggle_word_diff, {}, 'Toggle [w]ord diff')
+
+        -- Text object
+        map({ 'o', 'x' }, 'ih', gitsigns.select_hunk, {}, 'select [h]unk')
+      end,
     },
   },
 
