@@ -337,7 +337,7 @@ require('lazy').setup({
         map('n', '<leader>gd', gitsigns.diffthis, {}, '[d]iff this')
 
         map('n', '<leader>gD', function()
-          gitsigns.diffthis '~'
+          gitsigns.diffthis '@'
         end, {}, '[D]iff against last commit')
 
         map('n', '<leader>gQ', function()
